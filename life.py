@@ -69,6 +69,31 @@ class Life:
 
         self.cells_to_add.clear()
 
+    def dead_neighbors(self, cell):
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
+
+        for direction in directions:
+            dead_cell = cell[0] + direction[0] * GRID_SIZE, cell[1] + direction[1] * GRID_SIZE
+
+            if dead_cell in self.cells:
+                continue
+
+            neighbors = self.find_no_of_neighbors(dead_cell)
+
+            if neighbors == 3:
+                self.cells_to_add.add(dead_cell)
+
+    def find_no_of_neighbors(self, cell):
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
+        neighbors = 0
+
+        for direction in directions:
+            x = cell[0] + direction[0] * GRID_SIZE
+            y = cell[1] + direction[1] * GRID_SIZE
+            if (x, y) in self.cells:
+                neighbors += 1
+        return neighbors
+
     def timers(self):
         if not self.can_click:
 
@@ -112,27 +137,4 @@ class Life:
             self.can_key = False
             self.pause = not self.pause
 
-    def dead_neighbors(self, cell):
-        directions = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
 
-        for direction in directions:
-            dead_cell = cell[0] + direction[0] * GRID_SIZE, cell[1] + direction[1] * GRID_SIZE
-
-            if dead_cell in self.cells:
-                continue
-
-            neighbors = self.find_no_of_neighbors(dead_cell)
-
-            if neighbors == 3:
-                self.cells_to_add.add(dead_cell)
-
-    def find_no_of_neighbors(self, cell):
-        directions = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
-        neighbors = 0
-
-        for direction in directions:
-            x = cell[0] + direction[0] * GRID_SIZE
-            y = cell[1] + direction[1] * GRID_SIZE
-            if (x, y) in self.cells:
-                neighbors += 1
-        return neighbors
